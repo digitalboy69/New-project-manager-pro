@@ -137,3 +137,26 @@ button.secondary { border: 1px solid var(--separator-color); }
     #mainHeader .header-controls { gap: 8px; }
     #mainHeader .hdr-group + .hdr-group { padding-left: 8px; }
 }
+
+/* ===== Header alignment fix: groups never stack vertically ===== */
+.hdr-group { flex-wrap: nowrap; flex-shrink: 0; }
+.hdr-group button { flex-shrink: 0; }
+@media (max-width: 1199px) {
+    #mainHeader { flex-wrap: nowrap; }
+    #mainHeader h1 { display: none; }
+    #mainHeader .header-controls {
+        flex: 1; min-width: 0; width: auto;
+        flex-wrap: nowrap; justify-content: flex-start;
+        overflow-x: auto; scrollbar-width: none; gap: 8px; padding: 2px 0;
+        scroll-snap-type: x proximity;
+    }
+    #mainHeader .header-controls::-webkit-scrollbar { display: none; }
+    #mainHeader .hdr-group { scroll-snap-align: start; }
+}
+@media (min-width: 1200px) {
+    #mainHeader .header-controls { flex-wrap: nowrap; }
+}
+@media (max-width: 1199px) {
+    /* keep the theme toggle always reachable while the rest scrolls */
+    #mainHeader .hdr-group[aria-label="Tools"] { position: sticky; right: 0; margin-left: auto; background: linear-gradient(var(--header-bg), var(--header-bg)), var(--bg-primary); padding-left: 8px; z-index: 2; }
+}
