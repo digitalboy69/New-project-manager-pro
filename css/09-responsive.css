@@ -160,3 +160,18 @@ button.secondary { border: 1px solid var(--separator-color); }
     /* keep the theme toggle always reachable while the rest scrolls */
     #mainHeader .hdr-group[aria-label="Tools"] { position: sticky; right: 0; margin-left: auto; background: linear-gradient(var(--header-bg), var(--header-bg)), var(--bg-primary); padding-left: 8px; z-index: 2; }
 }
+
+/* ===== Side-scrolling header at every width ===== */
+#mainHeader { flex-wrap: nowrap; }
+#mainHeader .header-controls {
+    flex: 1; min-width: 0; width: auto; flex-wrap: nowrap; justify-content: flex-start;
+    overflow-x: auto; overflow-y: hidden; scrollbar-width: none; gap: 8px; padding: 2px 0;
+    scroll-snap-type: x proximity; overscroll-behavior-x: contain; cursor: grab;
+    -webkit-overflow-scrolling: touch;
+}
+#mainHeader .header-controls.dragging { cursor: grabbing; scroll-snap-type: none; user-select: none; }
+#mainHeader .header-controls::-webkit-scrollbar { display: none; }
+#mainHeader .hdr-group { scroll-snap-align: start; }
+#mainHeader .hdr-group[aria-label="Tools"] { position: sticky; right: 0; margin-left: auto; background: linear-gradient(var(--header-bg), var(--header-bg)), var(--bg-primary); padding-left: 8px; z-index: 2; }
+#mainHeader .header-controls.more-left { padding-left: 12px; }
+@media (min-width: 1200px) { #mainHeader h1 { display: block; margin-right: 12px; } #mainHeader .header-controls { justify-content: flex-start; } #mainHeader .hdr-group[aria-label="Create"] { margin-left: auto; } }
