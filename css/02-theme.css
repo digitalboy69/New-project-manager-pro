@@ -1,0 +1,107 @@
+/* Theme variables (dark and light) */
+/* --- Theme Variables --- */
+:root {
+    --system-font: -apple-system, BlinkMacMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
+    /* Light Theme */
+    --bg-primary-light: #f0f0f7;
+    --bg-secondary-light: #ffffff;
+    --text-primary-light: #1c1c1e;
+    --text-secondary-light: #3c3c4399; /* Opacity 60% */
+    --text-tertiary-light: #3c3c434d; /* Opacity 30% */
+    --border-color-light: #d1d1d6;
+    --separator-color-light: rgba(60, 60, 67, 0.29);
+    --accent-color-light: #007AFF;
+    --accent-color-hover-light: #005ecb;
+    --button-secondary-bg-light: #e5e5ea;
+    --button-secondary-text-light: #007AFF;
+    --button-secondary-hover-bg-light: #dcdce0;
+    --header-bg-light: rgba(247, 247, 247, 0.85);
+    --modal-bg-light: rgba(252, 252, 252, 0.92);
+    --input-bg-light: #ffffff;
+    --input-border-light: #C6C6C8;
+    --danger-color-light: #FF3B30;
+    --danger-hover-light: #d92c23;
+    --textarea-bg-light: #f9f9f9;
+    --placeholder-color-light: #3c3c434d;
+    --success-color-light: #34C759;
+    --warning-color-light: #FF9500;
+
+
+    /* Dark Theme */
+    --bg-primary-dark: #000000;
+    --bg-secondary-dark: #1c1c1e;
+    --text-primary-dark: #ffffff;
+    --text-secondary-dark: #ebebf599;
+    --text-tertiary-dark: #ebebf54d;
+    --border-color-dark: #38383a;
+    --separator-color-dark: rgba(84, 84, 88, 0.65);
+    --accent-color-dark: #0A84FF;
+    --accent-color-hover-dark: #0060df;
+    --button-secondary-bg-dark: #2c2c2e;
+    --button-secondary-text-dark: #0A84FF;
+    --button-secondary-hover-bg-dark: #3a3a3c;
+    --header-bg-dark: rgba(28, 28, 30, 0.75);
+    --modal-bg-dark: rgba(38, 38, 40, 0.85);
+    --input-bg-dark: #2c2c2e;
+    --input-border-dark: #48484a;
+    --danger-color-dark: #FF453A;
+    --danger-hover-dark: #ff2d22;
+    --textarea-bg-dark: #151515;
+    --placeholder-color-dark: #ebebf54d;
+    --success-color-dark: #30D158;
+    --warning-color-dark: #FF9F0A;
+
+    /* Default to Light Theme */
+    --bg-primary: var(--bg-primary-light);
+    --bg-secondary: var(--bg-secondary-light);
+    --text-primary: var(--text-primary-light);
+    --text-secondary: var(--text-secondary-light);
+    --text-tertiary: var(--text-tertiary-light);
+    --border-color: var(--border-color-light);
+    --separator-color: var(--separator-color-light);
+    --accent-color: var(--accent-color-light);
+    --accent-color-hover: var(--accent-color-hover-light);
+    --button-secondary-bg: var(--button-secondary-bg-light);
+    --button-secondary-text: var(--button-secondary-text-light);
+    --button-secondary-hover-bg: var(--button-secondary-hover-bg-light);
+    --header-bg: var(--header-bg-light);
+    --modal-bg: var(--modal-bg-light);
+    --input-bg: var(--input-bg-light);
+    --input-border: var(--input-border-light);
+    --danger-color: var(--danger-color-light);
+    --danger-hover: var(--danger-hover-light);
+    --textarea-bg: var(--textarea-bg-light);
+    --placeholder-color: var(--placeholder-color-light);
+    --success-color: var(--success-color-light);
+    --warning-color: var(--warning-color-light);
+}
+
+body.dark-theme {
+    --bg-primary: var(--bg-primary-dark);
+    --bg-secondary: var(--bg-secondary-dark);
+    --text-primary: var(--text-primary-dark);
+    --text-secondary: var(--text-secondary-dark);
+    --text-tertiary: var(--text-tertiary-dark);
+    --border-color: var(--border-color-dark);
+    --separator-color: var(--separator-color-dark);
+    --accent-color: var(--accent-color-dark);
+    --accent-color-hover: var(--accent-color-hover-dark);
+    --button-secondary-bg: var(--button-secondary-bg-dark);
+    --button-secondary-text: var(--button-secondary-text-dark);
+    --button-secondary-hover-bg: var(--button-secondary-hover-bg-dark);
+    --header-bg: var(--header-bg-dark);
+    --modal-bg: var(--modal-bg-dark);
+    --input-bg: var(--input-bg-dark);
+    --input-border: var(--input-border-dark);
+    --danger-color: var(--danger-color-dark);
+    --danger-hover: var(--danger-hover-dark);
+    --textarea-bg: var(--textarea-bg-dark);
+    --placeholder-color: var(--placeholder-color-dark);
+    --success-color: var(--success-color-dark);
+    --warning-color: var(--warning-color-dark);
+}
+
+/* Base styles */
+* { box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body { margin: 0; font-family: var(--system-font); background: var(--bg-primary); color: var(--text-primary); display: flex; flex-direction: column; min-height: 100vh; transition: background-color 0.3s ease, color 0.3s ease; }

@@ -1,0 +1,15 @@
+/* SVG icon sizing */
+/* --- SVG Icons --- */
+.icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    stroke-width: 2;
+    stroke: currentColor;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vertical-align: middle;
+}
+.icon-small { width: 18px; height: 18px; }
+.icon-large { width: 24px; height: 24px; }

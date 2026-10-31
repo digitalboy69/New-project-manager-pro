@@ -1,0 +1,18 @@
+/* Floating credits banner */
+/* --- Floating Credits Banner --- */
+.floating-credits {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 2000;
+    background: var(--accent-color);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    opacity: 0.9;
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+    cursor: default;
+}

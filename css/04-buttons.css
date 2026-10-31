@@ -1,0 +1,66 @@
+/* Buttons */
+/* --- Buttons (Enhanced Professional Look) --- */
+button { 
+    background: var(--accent-color); 
+    color: white; 
+    border: none; 
+    padding: 8px 16px; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    font-size: 15px; 
+    font-weight: 600; /* Slightly bolder font */
+    transition: background-color 0.2s ease-out, transform 0.1s ease-out, color 0.2s ease-out, box-shadow 0.2s ease; 
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 6px rgba(0, 122, 255, 0.1); /* Subtle shadow */
+}
+button:hover { 
+    background: var(--accent-color-hover); 
+    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+}
+button:active { transform: scale(0.97); }
+button:disabled {
+    background-color: var(--button-secondary-bg);
+    color: var(--text-tertiary);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+button.secondary { 
+    background: var(--button-secondary-bg); 
+    color: var(--button-secondary-text); 
+    box-shadow: none;
+    font-weight: 500;
+}
+button.secondary:hover { 
+    background: var(--button-secondary-hover-bg); 
+    color: var(--button-secondary-text);
+    box-shadow: none;
+}
+button.danger { 
+    background-color: var(--danger-color); 
+    color: white; 
+    box-shadow: 0 4px 6px rgba(255, 59, 48, 0.1);
+}
+button.danger:hover { 
+    background-color: var(--danger-hover); 
+    box-shadow: 0 4px 12px rgba(255, 59, 48, 0.3);
+}
+
+#themeToggleBtn, #themeToggleBtnEditor, #moreActionsBtn, #shortcutsBtn { 
+    background: var(--button-secondary-bg);
+    color: var(--text-primary); 
+    padding: 8px; 
+    width: 40px; 
+    height: 40px; 
+    justify-content: center;
+}
+#themeToggleBtn:hover, #themeToggleBtnEditor:hover, #moreActionsBtn:hover, #shortcutsBtn:hover { 
+    background-color: var(--button-secondary-hover-bg); 
+    box-shadow: none;
+}
+
+.theme-icon-dark { display: none; }
+body.dark-theme .theme-icon-light, #themeToggleBtnEditor.dark-theme-active .theme-icon-light { display: none; }
+body.dark-theme .theme-icon-dark, #themeToggleBtnEditor.dark-theme-active .theme-icon-dark { display: inline; }

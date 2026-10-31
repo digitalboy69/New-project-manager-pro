@@ -1,0 +1,141 @@
+/* Code editor, fullscreen editor, preview */
+/* --- Editor Styles --- */
+.editor-pane, .preview-pane { 
+    flex: 1 1 400px; 
+    background: var(--bg-secondary); 
+    border-radius: 12px; 
+    padding: 1rem; 
+    display: flex; 
+    flex-direction: column; 
+    min-width: 300px; 
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05); 
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; 
+}
+.editor-group { flex: 1; display: flex; flex-direction: column; margin-bottom: 1rem; position: relative; }
+.editor-group:last-child { margin-bottom: 0; }
+.editor-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+.editor-actions { display: flex; gap: 0.5rem; }
+.editor-actions button { padding: 5px 10px; font-size: 13px; font-weight: 500; }
+label { font-weight: 600; font-size: 16px; color: var(--text-primary); transition: color 0.3s ease; }
+textarea { 
+    flex: 1; 
+    font-family: "SF Mono", "Menlo", "Monaco", monospace; 
+    font-size: 0.9rem; 
+    padding: 0.8rem; 
+    border-radius: 6px; 
+    border: 1px solid var(--border-color); 
+    resize: vertical; 
+    min-height: 100px; 
+    background-color: var(--textarea-bg); 
+    color: var(--text-primary); 
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; 
+    line-height: 1.4;
+}
+textarea::placeholder { color: var(--placeholder-color); }
+.preview-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; font-weight: 600; font-size: 16px; color: var(--text-primary); transition: color 0.3s ease; }
+iframe { flex: 1; border: 1px solid var(--border-color); border-radius: 6px; min-height: 300px; background: #fff; transition: border-color 0.3s ease; }
+
+/* Fullscreen editor styles */
+.fullscreen-editor { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg-primary); z-index: 1000; padding: 0; display: none; flex-direction: column; opacity: 0; transform: translateY(30px); transition: opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), background-color 0.3s ease; }
+.fullscreen-editor.visible { opacity: 1; transform: translateY(0); display: flex; }
+.fullscreen-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: var(--header-bg); backdrop-filter: blur(25px) saturate(180%); -webkit-backdrop-filter: blur(25px) saturate(180%); border-bottom: 0.5px solid var(--separator-color); transition: background-color 0.3s ease, border-color 0.3s ease; position: relative;}
+
+/* Dropdown Menu */
+.menu-dropdown {
+    position: absolute;
+    top: 55px; 
+    right: 20px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 1010;
+    padding: 5px;
+    display: none;
+    flex-direction: column;
+    min-width: 180px;
+}
+.menu-dropdown.visible {
+    display: flex;
+}
+.menu-dropdown button {
+    background: none;
+    color: var(--text-primary);
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    text-align: left;
+    font-size: 15px;
+    font-weight: 400;
+    transition: background-color 0.2s;
+    justify-content: flex-start;
+}
+.menu-dropdown button:hover {
+    background: var(--button-secondary-hover-bg);
+}
+
+
+.feature-bar {
+    padding: 0.75rem 1rem; 
+    background: var(--bg-secondary);
+    border-bottom: 0.5px solid var(--separator-color);
+    flex-shrink: 0;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.find-replace-bar, .jump-to-line-container { 
+    display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem; 
+    padding: 0;
+}
+.find-replace-bar:last-child { margin-bottom: 0; }
+
+.find-replace-input, .jump-to-line-input { 
+    flex-grow: 1; padding: 8px 10px; border-radius: 6px; 
+    border: 1px solid var(--input-border); background-color: var(--input-bg); 
+    color: var(--text-primary); font-size: 14px; 
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; 
+}
+.find-replace-input:focus, .jump-to-line-input:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color) 20%, transparent); }
+.find-replace-btn, .jump-to-line-btn { padding: 8px 10px; font-size: 14px; }
+.find-matches-count { font-size: 13px; color: var(--text-secondary); padding: 0 0.5rem; min-width: 40px; text-align: right; }
+.find-options { display: flex; gap: 1rem; font-size: 13px; color: var(--text-secondary); padding-top: 0.25rem; }
+.find-options label { font-size: 13px; font-weight: normal; color: var(--text-secondary); }
+.find-options input[type="checkbox"] { vertical-align: middle; margin-right: 4px; accent-color: var(--accent-color); }
+
+.fullscreen-content { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+    padding: 1rem; /* Padding for the main editor wrapper */
+    overflow: hidden; 
+}
+.fullscreen-textarea { flex: 1; width: 100%; font-family: "SF Mono", "Menlo", "Monaco", monospace; font-size: 1rem; padding: 1rem; border: none; border-radius: 0; resize: none; background-color: var(--textarea-bg); color: var(--text-primary); transition: background-color 0.3s ease, color 0.3s ease; line-height: 1.4; }
+.fullscreen-textarea::placeholder { color: var(--placeholder-color); }
+
+/* Line Number Styling */
+.code-editor-container {
+    flex: 1;
+    display: flex;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--textarea-bg);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    overflow: hidden; 
+}
+
+.line-numbers {
+    min-width: 40px; 
+    max-width: 60px;
+    padding: 1rem 0.5rem;
+    font-family: "SF Mono", "Menlo", "Monaco", monospace;
+    font-size: 1rem;
+    line-height: 1.4; 
+    text-align: right;
+    color: var(--text-tertiary);
+    background-color: var(--textarea-bg);
+    border-right: 1px solid var(--border-color);
+    overflow: hidden; 
+    user-select: none; 
+    flex-shrink: 0;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}

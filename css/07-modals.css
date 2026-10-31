@@ -1,0 +1,142 @@
+/* Modals */
+/* --- Modal Styles --- */
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center; z-index: 1000; opacity: 0; transition: opacity 0.25s ease-out; }
+.modal.visible { display: flex; opacity: 1; }
+.modal-content { 
+    background: var(--modal-bg); 
+    backdrop-filter: blur(30px) saturate(200%); 
+    -webkit-backdrop-filter: blur(30px) saturate(200%); 
+    padding: 1.5rem; 
+    border-radius: 14px; 
+    width: 90%; 
+    max-width: 500px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
+    transform: scale(0.95) translateY(10px); 
+    opacity: 0; 
+    transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s cubic-bezier(0.25, 0.1, 0.25, 1), background-color 0.3s ease; 
+}
+.modal.visible .modal-content { transform: scale(1) translateY(0); opacity: 1; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; padding-bottom: 0.8rem; border-bottom: 0.5px solid var(--separator-color); }
+.modal-title { margin: 0; font-size: 17px; font-weight: 600; }
+.close-modal { 
+    background: none; border: none; font-size: 22px; font-weight: 400; line-height: 1; cursor: pointer; color: var(--text-tertiary); 
+    padding: 5px; border-radius: 50%; 
+    transition: color 0.2s ease, background-color 0.2s ease; 
+    display: flex; align-items: center; justify-content: center;
+}
+.close-modal:hover { color: var(--text-secondary); background-color: var(--button-secondary-bg); }
+.form-group { margin-bottom: 1rem; }
+.form-group label { display: block; margin-bottom: 0.5rem; font-size: 13px; font-weight: 500; color: var(--text-secondary); }
+.form-group input[type="text"], .form-group select, .form-group input[type="number"], .form-group textarea, .form-group input[type="url"], .form-group input[type="password"] { 
+    width: 100%; padding: 10px 12px; border: 0.5px solid var(--input-border); border-radius: 6px; 
+    background-color: var(--input-bg); color: var(--text-primary); font-size: 15px; 
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; 
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { 
+    outline: none; border-color: var(--accent-color); 
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color) 20%, transparent); 
+}
+.modal-actions { display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem; }
+
+/* Guide Box Styles (for Telegram, GitHub, etc.) */
+.guide-box {
+    background: var(--bg-primary);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    font-size: 14px;
+    color: var(--text-primary);
+}
+.guide-box h4 { 
+    font-size: 16px; 
+    margin-top: 0; 
+    margin-bottom: 0.5rem; 
+    font-weight: 600;
+}
+.guide-box ol, .guide-box ul { margin: 0.5rem 0 1rem 1rem; padding-left: 10px; }
+.guide-box code {
+    display: inline-block;
+    background: var(--button-secondary-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: "SF Mono", monospace;
+    font-size: 0.85rem;
+}
+.guide-box .warning {
+    color: var(--warning-color);
+    font-weight: 600;
+}
+
+/* Keyboard Shortcut Guide Style */
+.shortcut-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+}
+.shortcut-table th, .shortcut-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--separator-color);
+    text-align: left;
+}
+.shortcut-table th {
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+.shortcut-table td:last-child {
+    font-family: "SF Mono", monospace;
+    font-weight: 600;
+    color: var(--accent-color);
+}
+
+/* GitHub Sync Modal Styles */
+.sync-container {
+    max-height: 40vh;
+    overflow-y: auto;
+    padding-right: 10px; /* for scrollbar */
+}
+.sync-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.sync-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 5px;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+}
+.sync-project-name {
+    font-weight: 500;
+    font-size: 15px;
+}
+.sync-project-status {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+.sync-project-status.newer { color: var(--success-color); }
+.sync-project-status.older { color: var(--warning-color); }
+.sync-list-item button {
+    padding: 5px 12px;
+    font-size: 13px;
+}
+.sync-section-header {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+#githubSyncStatus {
+    text-align: center;
+    padding: 1rem;
+    color: var(--text-secondary);
+}
+.sync-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Project Manager</title>
+    <!-- JSZip is used by "Make Webapp" -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <link rel="stylesheet" href="css/01-icons.css">
+    <link rel="stylesheet" href="css/02-theme.css">
+    <link rel="stylesheet" href="css/03-header.css">
+    <link rel="stylesheet" href="css/04-buttons.css">
+    <link rel="stylesheet" href="css/05-project-cards.css">
+    <link rel="stylesheet" href="css/06-editor.css">
+    <link rel="stylesheet" href="css/07-modals.css">
+    <link rel="stylesheet" href="css/08-credits-banner.css">
+    <link rel="stylesheet" href="css/09-responsive.css">
+</head>
+<body class="dark-theme">
+<header id="mainHeader" style="display: flex;">
+    <h1>Project Manager</h1>
+    <div class="header-controls">
+        <button id="githubSyncBtn" class="secondary" title="Sync with GitHub">
+            <svg class="icon icon-small" viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/></svg>
+            Sync with GitHub
+        </button>
+        <button id="setupTelegramBtn" class="secondary" title="Configure Telegram Export">
+             <svg class="icon icon-small" viewBox="0 0 24 24"><path d="M22 10c0 5.5-4.5 10-10 10s-10-4.5-10-10 4.5-10 10-10 10 4.5 10 10zm-3.5-3.5-7.6 5.8-3.4-2.6-1.5 1.1 5.4 4.1 9.6-7.3-1.5-1.6z"></path></svg> 
+             Telegram Setup
+        </button>
+        <button id="makeWebappBtn" title="Create a downloadable Webapp (PWA) from a saved project">
+             <svg class="icon icon-small" viewBox="0 0 24 24"><path d="M12 21.5V11.5M12 3.5V6.5M10 5.5H14M4 11.5H7M17 11.5H20M5 18.5H19C20.1 18.5 21 17.6 21 16.5V7.5C21 6.4 20.1 5.5 19 5.5H5C3.9 5.5 3 6.4 3 7.5V16.5C3 17.6 3.9 18.5 5 18.5Z"/></svg>
+             Make Webapp
+        </button>
+        <button id="exportAllTelegramBtn" class="secondary" title="Export All Projects to Telegram">
+            <svg class="icon icon-small" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            Export All
+        </button>
+        <button id="importProjectsBtn" class="secondary">
+            <svg class="icon icon-small" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            Import
+        </button>
+        <button id="exportProjectsBtn" class="secondary">
+            <svg class="icon icon-small" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            Export
+        </button>
+        <button id="shortcutsBtn" class="secondary" aria-label="Keyboard Shortcuts">
+            <svg class="icon icon-small" viewBox="0 0 24 24"><path d="M3 15v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4"/><path d="M21 10V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v5"/><path d="M10 7h4"/><path d="M12 21v-7"/></svg>
+        </button>
+        <button id="themeToggleBtn" aria-label="Toggle theme">
+            <svg class="icon icon-small theme-icon-light" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+            <svg class="icon icon-small theme-icon-dark" viewBox="0 0 24 24"><path d="M12 3a6.36 6.36 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+        </button>
+        <button id="addProjectBtn">
+            <svg class="icon icon-small" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+            Add Project
+        </button>
+    </div>
+</header>
+
+<main id="mainPageContent" style="display: block;">
+    <div id="projectCardsGrid"></div>
+    <p class="no-projects-message" id="noProjectsMessage" style="display: block;">
+        <svg class="icon icon-large" viewBox="0 0 24 24" style="margin-bottom: 10px;"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect><path d="M12 8v8"></path><path d="M8 12h8"></path></svg><br>
+        No projects found. Click "Add Project" to start combining HTML, CSS, and JS!
+    </p>
+</main>
+
+<!-- Fullscreen Editor Modal (initially hidden) -->
+<div id="editorModal" class="fullscreen-editor" style="display: none;">
+    <!-- Content dynamically injected/controlled by JS -->
+</div>
+
+<!-- Floating Credits Banner -->
+<div class="floating-credits">
+    Made By Madhu Yadav
+</div>
+
+<!-- Hidden global file inputs for uploads and imports -->
+<input type="file" id="fileUploader" style="display: none;">
+<input type="file" id="jsonFileUploader" accept=".json" style="display: none;">
+<input type="file" id="iconFileUploader" accept="image/png, image/svg+xml, image/webp" style="display: none;">
+
+
+<!-- --- GLOBAL MODALS --- -->
+
+<!-- GitHub Setup Modal -->
+<div class="modal" id="githubSetupModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">GitHub Sync Setup</h3>
+            <button class="close-modal" data-modal-id="githubSetupModal" aria-label="Close modal">
+                <svg class="icon icon-small" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <div class="form-group">
+            <label for="githubTokenInput">Personal Access Token (PAT)</label>
+            <input type="password" id="githubTokenInput" placeholder="ghp_...">
+        </div>
+        <div class="form-group">
+            <label for="githubUsernameInput">GitHub Username</label>
+            <input type="text" id="githubUsernameInput" placeholder="e.g., octocat">
+        </div>
+        <div class="form-group">
+            <label for="githubRepoInput">Repository Name</label>
+            <input type="text" id="githubRepoInput" placeholder="e.g., my-projects-repo">
+        </div>
+
+        <div class="guide-box">
+            <h4>How to Get a Personal Access Token:</h4>
+            <ol>
+                <li>Go to your <a href="https://github.com/settings/tokens" target="_blank">GitHub Developer Settings</a>.</li>
+                <li>Click "Generate new token" and select "Generate new token (classic)".</li>
+                <li>Give it a name (e.g., "ProjectManagerApp") and set an expiration date.</li>
+                <li>
+                    Under "Select scopes," check the <code>repo</code> box. This grants full control of public and private repositories.
+                </li>
+                <li>Click "Generate token" and copy the token immediately. <strong class="warning">You will not see it again.</strong></li>
+            </ol>
+            <p><strong class="warning">Security Note:</strong> Your token is stored in your browser's local storage. This is convenient but less secure than server-side authentication. Use a token with limited permissions and a short expiration date.</p>
+        </div>
+        <div class="modal-actions">
+            <button class="secondary" id="cancelGithubSetup">Cancel</button>
+            <button id="saveGithubSetup">Save Configuration</button>
+        </div>
+    </div>
+</div>
+
+<!-- GitHub Sync Modal -->
+<div class="modal" id="githubSyncModal">
+    <div class="modal-content" style="max-width: 700px;">
+        <div class="modal-header">
+            <h3 class="modal-title">Sync with GitHub</h3>
+            <button class="close-modal" data-modal-id="githubSyncModal" aria-label="Close modal">
+                <svg class="icon icon-small" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        
+        <div id="githubSyncContent">
+            <!-- This content is dynamically generated by JS -->
+        </div>
+        <div id="githubSyncStatus">
+            Click Refresh to compare local and remote projects.
+        </div>
+
+        <div class="modal-actions sync-actions">
+            <div>
+                <button id="openGithubSetupBtn" class="secondary" title="Edit GitHub Configuration">
+                     <svg class="icon icon-small" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                    Settings
+                </button>
+            </div>
+            <div>
+                 <button class="secondary" id="cancelSync">Close</button>
+                 <button id="refreshSyncBtn">
+                    <svg class="icon icon-small" viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+                    Refresh
+                 </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Telegram Setup Modal -->
+<div class="modal" id="telegramSetupModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Telegram Export Setup</h3>
+            <button class="close-modal" data-modal-id="telegramSetupModal" aria-label="Close modal">
+                <svg class="icon icon-small" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <div class="form-group">
+            <label for="botTokenInput">Telegram Bot Token</label>
+            <input type="text" id="botTokenInput" placeholder="e.g., 123456789:AABBCC-DDeeffgGgHHhIJJJkkLLMmNnOoP">
+        </div>
+        <div class="form-group">
+            <label for="chatIdInput">Telegram Chat ID</label>
+            <input type="text" id="chatIdInput" placeholder="e.g., -123456789 or @username">
+        </div>
+
+        <div class="guide-box">
+            <h4>How to Get Your IDs:</h4>
+            <ol>
+                <li>
+                    <strong>Bot Token:</strong> Find the BotFather bot on Telegram and send <code>/newbot</code>. Follow the instructions. Your token will be provided after setup.
+                </li>
+                <li>
+                    <strong>Chat ID:</strong>
+                    <ul>
+                        <li>For a Private Chat: Start a chat with <a href="https://t.me/userinfobot" target="_blank">@userinfobot</a> and send <code>/start</code>. It will reply with your ID.</li>
+                        <li>For a Channel/Group: Add <a href="https://t.me/getidsbot" target="_blank">@getidsbot</a> to your group/channel. Send <code>/getid</code> in the chat to retrieve the ID (it will start with a hyphen, e.g., <code>-123456789</code>).</li>
+                    </ul>
+                </li>
+            </ol>
+            <p><strong>Note:</strong> We save this data locally in your browser for export functionality.</p>
+        </div>
+        <div class="modal-actions">
+            <button class="secondary" id="cancelTelegramSetup">Cancel</button>
+            <button id="saveTelegramSetup">Save Configuration</button>
+        </div>
+    </div>
+</div>
+
+<!-- Export Single Project Modal (Needed in both scopes, but defined globally) -->
+<div class="modal" id="exportSingleTelegramModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Export Current Project to Telegram</h3>
+            <button class="close-modal" data-modal-id="exportSingleTelegramModal" aria-label="Close modal">
+                <svg class="icon icon-small" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <div class="form-group">
+            <label for="codePartSelect">Select Code Part to Send</label>
+            <select id="codePartSelect">
+                <option value="html">HTML (Text)</option>
+                <option value="css">CSS (Text)</option>
+                <option value="js">JavaScript (Text)</option>
+                <option value="combined" selected>Combined (HTML File)</option>
+            </select>
+        </div>
+        <div class="modal-actions">
+            <button class="secondary" id="cancelSingleExport">Cancel</button>
+            <button id="confirmSingleExport">Send to Telegram</button>
+        </div>
+    </div>
+</div>
+
+<!-- Make Webapp Modal -->
+<div class="modal" id="makeWebappModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Create Web App (PWA)</h3>
+            <button class="close-modal" data-modal-id="makeWebappModal" aria-label="Close modal">
+                <svg class="icon icon-small" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <div class="form-group">
+            <label for="webappProjectSelect">Select Saved Project</label>
+            <select id="webappProjectSelect">
+                <option value="">-- Select a project --</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="webappAppName">Application Name (e.g., My Awesome App)</label>
+            <input type="text" id="webappAppName" placeholder="Required for Manifest">
+        </div>
+        <div class="form-group">
+            <label for="webappPackageName">Start URL (e.g., /index.html)</label>
+            <input type="text" id="webappPackageName" value="/" placeholder="Usually / or /index.html">
+        </div>
+         <div class="form-group">
+            <label for="webappIconUpload">App Icon (PNG/SVG/WebP - 512x512 recommended)</label>
+            <button id="webappIconUploadBtn" class="secondary" style="margin-top: 5px;">
+                <svg class="icon icon-small" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                Upload Icon
+            </button>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 5px;" id="webappIconStatus">No icon selected. Will use default.</p>
+        </div>
+        <div class="modal-actions">
+            <button class="secondary" id="cancelWebapp">Cancel</button>
+            <button id="confirmWebapp">Build and Download ZIP</button>
+        </div>
+    </div>
+</div>
+
+<!-- Keyboard Shortcuts Modal (Desktop only) -->
+<div class="modal" id="shortcutsModal">
+    <div class="modal-content" style="max-width: 600px;">
+        <div class="modal-header">
+            <h3 class="modal-title">Keyboard Shortcuts Guide (Desktop Only)</h3>
+            <button class="close-modal" data-modal-id="shortcutsModal" aria-label="Close modal">
+                <svg class="icon icon-small" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <p style="color: var(--text-secondary);">Shortcuts are active when the main editor window is open. <br><code>Cmd</code> is used on macOS, <code>Ctrl</code> on Windows/Linux.</p>
+        
+        <table class="shortcut-table">
+            <thead>
+                <tr><th>Action</th><th>Shortcut</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Save Current Project</td><td>Cmd/Ctrl + S</td></tr>
+                <tr><td>Load Project List</td><td>Cmd/Ctrl + O</td></tr>
+                <tr><td>Go Back to Projects (Editor Close)</td><td>Cmd/Ctrl + Q</td></tr>
+                <tr><td>Open Preview in New Tab</td><td>Cmd/Ctrl + Enter</td></tr>
+                <tr><td colspan="2" style="font-weight: 700; color: var(--text-primary); padding-top: 15px;">In Fullscreen Editor Mode:</td></tr>
+                <tr><td>Find / Replace</td><td>Cmd/Ctrl + F</td></tr>
+                <tr><td>Go to Line</td><td>Cmd/Ctrl + G</td></tr>
+                <tr><td>Undo</td><td>Cmd/Ctrl + Z</td></tr>
+                <tr><td>Redo</td><td>Cmd/Ctrl + Y (or Shift+Z)</td></tr>
+                <tr><td>Exit Fullscreen / Close Modal</td><td>Esc</td></tr>
+            </tbody>
+        </table>
+
+        <div class="modal-actions">
+            <button class="secondary" id="okShortcuts">Got It</button>
+        </div>
+    </div>
+</div>
+
+    <script src="js/00-utils.js"></script>
+    <script src="js/01-editor-template.js"></script>
+    <script src="js/02-dom-refs.js"></script>
+    <script src="js/03-theme.js"></script>
+    <script src="js/04-modals.js"></script>
+    <script src="js/05-html-builder.js"></script>
+    <script src="js/06-project-cards.js"></script>
+    <script src="js/07-editor-modal.js"></script>
+    <script src="js/08-import-export.js"></script>
+    <script src="js/09-telegram.js"></script>
+    <script src="js/10-make-webapp.js"></script>
+    <script src="js/11-github-sync.js"></script>
+    <script src="js/12-keyboard-shortcuts.js"></script>
+    <script src="js/13-code-editor.js"></script>
+    <script src="js/14-file-upload-and-init.js"></script>
+</body>
+</html>
