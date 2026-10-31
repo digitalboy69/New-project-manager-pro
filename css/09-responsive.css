@@ -91,7 +91,7 @@ header { gap: 12px; padding-left: max(20px, env(safe-area-inset-left)); padding-
     .modal-actions button { flex: 1 1 120px; justify-content: center; }
     .fullscreen-content { padding: 0.5rem; }
     .fullscreen-header { padding: 8px 12px; flex-wrap: wrap; gap: 8px; }
-    .floating-credits { font-size: 11px; padding: 6px 10px; opacity: 0.75; }
+    .floating-credits { font-size: 11px; padding: 6px 12px 6px 9px; gap: 6px; }
     .menu-dropdown { right: 12px; }
 }
 

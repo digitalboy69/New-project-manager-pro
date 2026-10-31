@@ -16,3 +16,35 @@
     transition: opacity 0.3s ease, background-color 0.3s ease;
     cursor: default;
 }
+
+/* --- Credits badge: refined glass pill, soft gradient, gentle entrance --- */
+.floating-credits {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px 8px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+    color: #fff;
+    background: linear-gradient(135deg, #007AFF 0%, #5E5CE6 100%);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 6px 18px rgba(0, 122, 255, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    opacity: 0.92;
+    animation: creditsIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.6s both;
+}
+.floating-credits::before {
+    content: "";
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+    animation: creditsPulse 3s ease-out infinite;
+}
+@keyframes creditsIn { from { opacity: 0; transform: translateY(12px) scale(0.96); } to { opacity: 0.92; transform: none; } }
+@keyframes creditsPulse { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.65); } 70%, 100% { box-shadow: 0 0 0 8px rgba(255,255,255,0); } }
+body.dark-theme .floating-credits { background: linear-gradient(135deg, #0A84FF 0%, #7D7AFF 100%); box-shadow: 0 6px 20px rgba(10, 132, 255, 0.35), inset 0 1px 0 rgba(255,255,255,0.25); }
+@media (prefers-reduced-motion: reduce) { .floating-credits, .floating-credits::before { animation: none; } }
