@@ -6,28 +6,28 @@ const editorContentHTML = `
     <div class="header-controls">
         <button id="backToProjectsBtn" class="secondary">
             <svg class="icon icon-small" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
-            Back to Projects (Q)
+            Projects <kbd>Q</kbd>
         </button>
         <button id="themeToggleBtnEditor" aria-label="Toggle theme">
             <svg class="icon icon-small theme-icon-light" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
             <svg class="icon icon-small theme-icon-dark" viewBox="0 0 24 24"><path d="M12 3a6.36 6.36 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
         </button>
         <div class="header-buttons">
-          <button id="saveBtn">
+          <button id="saveBtn" title="Save this project (S)">
             <svg class="icon icon-small" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg>
-            Save (S)
+            Save <kbd>S</kbd>
           </button>
-          <button id="loadBtn">
+          <button id="openInNewBtn" title="Open the result in a new tab (Enter)">
+            <svg class="icon icon-small" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Open Preview <kbd>Enter</kbd>
+          </button>
+          <button id="loadBtn" class="secondary" title="Load a saved project (O)">
             <svg class="icon icon-small" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-            Load (O)
+            Load <kbd>O</kbd>
           </button>
           <button id="exportSingleTelegramBtn" class="secondary" title="Export current code block to Telegram">
             <svg class="icon icon-small" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Export to Telegram
-          </button>
-          <button id="openInNewBtn">
-            <svg class="icon icon-small" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Open Preview (Enter)
           </button>
         </div>
     </div>

@@ -112,3 +112,28 @@ header { gap: 12px; padding-left: max(20px, env(safe-area-inset-left)); padding-
     header h1 { white-space: nowrap; }
     #mainHeader .header-controls { justify-content: flex-end; flex: 1; }
 }
+
+/* ===== Button grouping and clarity ===== */
+.hdr-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.hdr-group + .hdr-group { padding-left: 12px; margin-left: 2px; border-left: 1px solid var(--separator-color); }
+#mainHeader .header-controls { gap: 8px 12px; }
+#editorModal .header-buttons { padding-left: 12px; border-left: 1px solid var(--separator-color); }
+/* keyboard hints: subtle badge instead of "(S)" */
+kbd { font: 600 11px/1 "SF Mono", Menlo, monospace; padding: 2px 5px; border-radius: 4px; background: rgba(127,127,127,.22); color: inherit; opacity: .85; }
+button:not(.secondary) kbd { background: rgba(255,255,255,.25); }
+@media (pointer: coarse) { kbd { display: none; } }
+/* secondary buttons read as secondary, primary stays bold */
+button.secondary { border: 1px solid var(--separator-color); }
+.project-card-actions button { flex: 0 0 auto; }
+@media (max-width: 768px) {
+    .hdr-group { flex-wrap: nowrap; flex-shrink: 0; }
+    .hdr-group + .hdr-group { padding-left: 8px; }
+    #editorModal .header-buttons { border-left: none; padding-left: 0; }
+    .project-card-actions { display: grid; grid-template-columns: 1fr 1fr; }
+    .project-card-actions button { justify-content: center; }
+}
+@media (min-width: 769px) and (max-width: 1400px) {
+    #mainHeader .hdr-group button { padding: 8px 11px; font-size: 14px; }
+    #mainHeader .header-controls { gap: 8px; }
+    #mainHeader .hdr-group + .hdr-group { padding-left: 8px; }
+}
