@@ -27,3 +27,88 @@
     /* Hide shortcut guide icon on mobile */
     #shortcutsBtn { display: none !important; }
 }
+
+/* ===== UI upgrade: responsive, touch and accessibility improvements ===== */
+
+/* Keyboard focus visibility (does not affect mouse users) */
+button:focus-visible, a:focus-visible, select:focus-visible, textarea:focus-visible, input:focus-visible {
+    outline: 2px solid var(--accent-color); outline-offset: 2px;
+}
+
+/* Header: labels never wrap, controls wrap cleanly */
+button { white-space: nowrap; }
+.header-controls { flex-wrap: wrap; row-gap: 8px; }
+header { gap: 12px; padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right)); padding-top: max(10px, env(safe-area-inset-top)); }
+
+/* Credits badge never blocks clicks or hides the last card */
+.floating-credits { pointer-events: none; bottom: max(20px, env(safe-area-inset-bottom)); right: max(20px, env(safe-area-inset-right)); }
+#mainPageContent { padding-bottom: 5rem; }
+
+/* Cards: tidy spacing, ellipsis for long titles */
+.project-card h3 { overflow-wrap: anywhere; }
+.project-card-actions { flex-wrap: wrap; }
+@media (hover: none) { .project-card:hover { transform: none; } }
+
+/* Touch devices: comfortable tap targets */
+@media (pointer: coarse) {
+    button { min-height: 40px; }
+    .editor-actions button, .find-replace-btn, .jump-to-line-btn { min-height: 36px; }
+    .close-modal { min-width: 40px; min-height: 40px; }
+    input, select, textarea { font-size: 16px; } /* prevents iOS zoom-on-focus */
+}
+
+/* Wide screens: editors and preview side by side with real height */
+@media (min-width: 1100px) {
+    #editorModal main { display: flex; flex-direction: row; align-items: stretch; gap: 1rem; padding: 1rem 1.5rem; overflow: hidden; min-height: 0; flex: 1; }
+    #editorModal .editor-pane, #editorModal .preview-pane { flex: 1 1 0; min-width: 0; min-height: 0; overflow: auto; }
+    #editorModal iframe { min-height: 0; }
+}
+
+/* Tablets and below */
+@media (max-width: 1099px) {
+    #editorModal main { overflow-y: auto; }
+    .editor-pane, .preview-pane { min-width: 0; flex-basis: auto; }
+}
+
+/* Phones */
+@media (max-width: 768px) {
+    header { padding-left: max(12px, env(safe-area-inset-left)); padding-right: max(12px, env(safe-area-inset-right)); }
+    /* header buttons become one swipeable row instead of a messy stack */
+    .header-controls { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 2px; gap: 8px; }
+    .header-controls::-webkit-scrollbar { display: none; }
+    .header-controls > *, .header-controls button { flex-shrink: 0; }
+    .header-buttons { flex-wrap: nowrap; gap: 8px; flex-shrink: 0; }
+    #editorModal header { gap: 6px; }
+    #editorModal .header-controls { width: 100%; }
+    .project-card { min-height: 0; }
+    .project-card-actions { margin-top: 0.75rem; }
+    .no-projects-message { padding: 3rem 1rem; }
+    .editor-pane, .preview-pane { flex: 0 0 auto; }
+    #editorModal iframe { min-height: 260px; }
+    .editor-header { flex-wrap: wrap; gap: 0.5rem; }
+    .modal-content { width: 94%; max-height: 90vh; overflow-y: auto; padding: 1.1rem; }
+    .modal-actions { flex-wrap: wrap; }
+    .modal-actions button { flex: 1 1 120px; justify-content: center; }
+    .fullscreen-content { padding: 0.5rem; }
+    .fullscreen-header { padding: 8px 12px; flex-wrap: wrap; gap: 8px; }
+    .floating-credits { font-size: 11px; padding: 6px 10px; opacity: 0.75; }
+    .menu-dropdown { right: 12px; }
+}
+
+/* Very small phones */
+@media (max-width: 380px) {
+    #mainPageContent { padding: 0.75rem 0.5rem 5rem; }
+    .header-controls button { padding: 8px 9px; font-size: 12px; }
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    .project-card:hover { transform: none; }
+}
+
+/* Desktop header: keep title on one line, controls aligned right */
+@media (min-width: 769px) {
+    header h1 { white-space: nowrap; }
+    #mainHeader .header-controls { justify-content: flex-end; flex: 1; }
+}
