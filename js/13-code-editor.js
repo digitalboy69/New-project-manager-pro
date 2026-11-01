@@ -158,31 +158,86 @@ function initializeCodeEditor(editorRoot, getProjectsFromMain, saveProjectsToMai
     };
     
     // --- Clipboard Fix (Paste Functionality) ---
+    // 1) try the Clipboard API (with a timeout, because a blocked permission prompt can hang),
+    // 2) if that fails for any reason, open an in-app "Paste here" box that works with the
+    //    normal long-press / Ctrl+V paste and needs no permission at all.
+    function applyPastedText(targetId, text, append) {
+        const targetTextarea = editorRoot.querySelector(`#${targetId}`);
+        targetTextarea.value = append ? targetTextarea.value + text : text;
+        markWorkAsUnsaved();
+        targetTextarea.dispatchEvent(new Event('input'));
+        if (currentFullscreenEditor === targetId) {
+            fullscreenTextarea.value = targetTextarea.value;
+            if (exposedFunctions.updateLineNumbers) exposedFunctions.updateLineNumbers();
+        }
+    }
+
+    function openManualPasteDialog(targetId, reason) {
+        let dlg = document.getElementById('manualPasteModal');
+        if (!dlg) {
+            dlg = document.createElement('div');
+            dlg.id = 'manualPasteModal';
+            dlg.className = 'modal';
+            dlg.setAttribute('role', 'dialog');
+            dlg.setAttribute('aria-modal', 'true');
+            dlg.innerHTML = `
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h3 class="modal-title">Paste your code</h3>
+                  <button type="button" class="close-modal" id="manualPasteClose" aria-label="Close">&times;</button>
+                </div>
+                <p id="manualPasteHint" style="margin:0 0 .75rem;font-size:14px;color:var(--text-secondary)"></p>
+                <textarea id="manualPasteArea" placeholder="Long-press here and choose Paste (or press Ctrl/Cmd+V)" spellcheck="false" style="width:100%;min-height:160px;flex:none"></textarea>
+                <div class="modal-actions">
+                  <button type="button" class="secondary" id="manualPasteAppend">Add to end</button>
+                  <button type="button" id="manualPasteReplace">Replace</button>
+                </div>
+              </div>`;
+            document.body.appendChild(dlg);
+            dlg.addEventListener('click', e => { if (e.target === dlg) dlg.classList.remove('visible'); });
+            dlg.querySelector('#manualPasteClose').addEventListener('click', () => dlg.classList.remove('visible'));
+        }
+        dlg.style.zIndex = 3000;
+        const area = dlg.querySelector('#manualPasteArea');
+        const hint = dlg.querySelector('#manualPasteHint');
+        hint.textContent = reason + ' Long-press the box below and tap Paste: it is inserted automatically.';
+        area.value = '';
+        const done = (append) => {
+            const text = area.value;
+            if (!text) { area.focus(); return; }
+            applyPastedText(targetId, text, append);
+            dlg.classList.remove('visible');
+        };
+        // replace old handlers by cloning the buttons
+        ['manualPasteReplace', 'manualPasteAppend'].forEach(id => {
+            const old = dlg.querySelector('#' + id); const fresh = old.cloneNode(true);
+            old.parentNode.replaceChild(fresh, old);
+            fresh.addEventListener('click', () => done(id === 'manualPasteAppend'));
+        });
+        // pasting straight into the box with Replace behaviour is the common case: auto-apply
+        area.onpaste = (e) => {
+            const t = (e.clipboardData || window.clipboardData)?.getData('text');
+            if (t) { e.preventDefault(); applyPastedText(targetId, t, false); dlg.classList.remove('visible'); }
+        };
+        dlg.classList.add('visible');
+        setTimeout(() => area.focus(), 50);
+    }
+
     async function pasteToEditor(targetId) {
         const targetTextarea = editorRoot.querySelector(`#${targetId}`);
+        if (!navigator.clipboard || !navigator.clipboard.readText || !window.isSecureContext) {
+            return openManualPasteDialog(targetId, 'Automatic paste is not available here.');
+        }
         try {
-            // Use the modern clipboard API
-            const text = await navigator.clipboard.readText();
-            if (text) {
-                targetTextarea.value = text;
-                markWorkAsUnsaved();
-                targetTextarea.dispatchEvent(new Event('input'));
-                
-                // Sync to fullscreen editor if active
-                if (currentFullscreenEditor === targetId) {
-                    fullscreenTextarea.value = text;
-                    exposedFunctions.updateLineNumbers();
-                }
-            } else {
-                // If permission is denied or clipboard empty, focus for manual paste
-                alert('Clipboard is empty or access denied. Focusing the field, please paste manually (Ctrl/Cmd+V).');
-                targetTextarea.focus(); 
-            }
+            const text = await Promise.race([
+                navigator.clipboard.readText(),
+                new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 4000))
+            ]);
+            if (text) { applyPastedText(targetId, text, false); }
+            else { openManualPasteDialog(targetId, 'The clipboard looks empty or unreadable.'); }
         } catch (e) {
-            // Fallback/Warning for browsers blocking readText()
-            alert('Automatic pasting failed (Permission issue). Focusing the field, please paste manually (Ctrl/Cmd+V).');
             console.error('Paste error:', e);
-            targetTextarea.focus(); 
+            openManualPasteDialog(targetId, 'The browser blocked clipboard access.');
         }
     }
     
